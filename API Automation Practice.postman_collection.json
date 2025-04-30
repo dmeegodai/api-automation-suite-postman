@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "76dcd5b2-27ef-49a8-9af2-2b98318b79fa",
+		"name": "API Automation Practice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37896799"
+	},
+	"item": [
+		{
+			"name": "GET Requests",
+			"item": [
+				{
+					"name": "Request One",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Verify the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Verify the contnet type is application/json', () => {\r",
+									"    pm.response.to.have.header('Content-Type', 'application/json; charset=utf-8');\r",
+									"})\r",
+									"\r",
+									"pm.test('Verify the connection is keep alive', () => {\r",
+									"    pm.response.to.have.header('connection', 'keep-alive');\r",
+									"})\r",
+									"\r",
+									"pm.test('Verify responce body content', () => {\r",
+									"    const responceBodyContent = pm.response.json();\r",
+									"    pm.expect( responceBodyContent[0]).to.have.property('userId'); \r",
+									"    pm.expect( responceBodyContent[0]).to.have.property('id');\r",
+									"    pm.expect( responceBodyContent[0]).to.have.property('title');\r",
+									"    pm.expect( responceBodyContent[0]).to.have.property('body');\r",
+									"})\r",
+									"\r",
+									"pm.test('Extract data from responce', () => {\r",
+									"    const responceBodyContent = pm.response.json();\r",
+									"    const userId = responceBodyContent[0].userId;\r",
+									"    const title = responceBodyContent[0].title;\r",
+									"\r",
+									"    pm.environment.set('userId', userId);\r",
+									"    pm.environment.set('title', title);\r",
+									"\r",
+									"    pm.expect(userId).to.be.a('number');\r",
+									"    pm.expect(title).to.be.a('string');\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Request Two",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Validate userID matches stored values', () => {\r",
+									"    pm.expect(pm.response.json().userID).to.eql(pm.environment.get(\"userID\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"validate title matches store values\", () => {\r",
+									"    pm.expect(pm.response.json().title).to.eql(pm.environment.get(\"title\"));\r",
+									"}); \r",
+									"\r",
+									"pm.test(\"Validate the body contnet matches\", () => {\r",
+									"    pm.expect(pm.response.json().body).to.contain(\"recusandae consequuntur expedita\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts/{{userId}}",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "POST Requests",
+			"item": [
+				{
+					"name": "New Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 201\", () => {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has userID\", () => {\r",
+									"    pm.expect(jsonData.userID).to.eql(1);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response has title\", () => {\r",
+									"    pm.expect(jsonData.title).to.eql(\"Test POST Request\");\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test POST Request\",\r\n    \"body\": \"This is a new post created using the JSONPlaceholder API.\",\r\n    \"userID\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dynamic Data",
+			"item": []
+		},
+		{
+			"name": "Workflow Automation",
+			"item": []
+		}
+	]
+}
