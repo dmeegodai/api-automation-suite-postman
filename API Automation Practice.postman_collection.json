@@ -131,6 +131,56 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Request Three",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\"), () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Response has correct ID\"), () => {\r",
+									"    pm.expect(jsonData.id).to.eql(100);\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Response has correct title\"), () => {\r",
+									"    pm.expect(jsonData.title).to.eql(\"at nam consequatur ea labore ea harum\");\r",
+									"}\r",
+									"pm.test(\"Response header has Content-Type application/json\"), () => {\r",
+									"    pm.expect(pm.response.headers).has(\"Content_type\").to.be.true;\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts/100",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts",
+								"100"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -198,6 +248,58 @@
 		{
 			"name": "Workflow Automation",
 			"item": []
+		},
+		{
+			"name": "PUT Requests",
+			"item": [
+				{
+					"name": "New Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"title\": \"AI Enhanced PUT Request Title\",\r\n  \"body\": \"This body was updated with AI assistance.\",\r\n  \"userId\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts/1",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
