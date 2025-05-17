@@ -259,7 +259,43 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"let baseline = pm.response.json();\r",
+									"pm.collectionVariables.set(\"baseline_response\", JSON.stringify(baseline));\r",
+									"console.log(\"Baseline response saved to collection variable\", baseline);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts/1",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
 									"let response = pm.response.json();\r",
+									"\r",
 									"\r",
 									"pm.test(\"Status code is 200\", () => {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -284,10 +320,11 @@
 									"    pm.expect(pm.response.responseTime).to.be.below(10000);\r",
 									"});\r",
 									"\r",
-									"\r",
 									"pm.test(\"Response Body contains updated userId\", () => {\r",
 									"    pm.expect(response.userId).to.eql(1);\r",
 									"})\r",
+									"\r",
+									"\r",
 									""
 								],
 								"type": "text/javascript",
@@ -324,6 +361,12 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseline_response",
+			"value": ""
 		}
 	]
 }
