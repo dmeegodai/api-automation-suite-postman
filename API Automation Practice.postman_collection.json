@@ -238,6 +238,53 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Open AI POST",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{openai_api}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"model\": \"gpt-3.5-turbo\",\r\n  \"messages\": [\r\n    {\r\n      \"role\": \"system\",\r\n      \"content\": \"You are a QA assistant. Compare the expected and actual API responses and explain the differences.\"\r\n    },\r\n    {\r\n      \"role\": \"user\",\r\n      \"content\": \"Expected: {\\\"id\\\": 1, \\\"name\\\": \\\"Test\\\"}, Actual: {\\\"id\\\": 1, \\\"name\\\": \\\"Test Updated\\\"}\"\r\n    }\r\n  ],\r\n  \"temperature\": 0.3\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.openai.com/v1/chat/completions",
+							"protocol": "https",
+							"host": [
+								"api",
+								"openai",
+								"com"
+							],
+							"path": [
+								"v1",
+								"chat",
+								"completions"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
