@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "a9b51b40-916d-4350-96b5-147382fc5d4b",
+		"name": "AI Response Diff",
+		"description": "### AI Response Diff – Smart API Comparison via Hugging Face\n\nThis collection enables automated comparison of API responses using AI. It fetches the original response, updates it via a `PUT` request, and then sends both versions to a Hugging Face summarization model to get a natural-language diff of the changes.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37896799"
+	},
+	"item": [
+		{
+			"name": "Get Product – Baseline",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let baselineResponse =  pm.response.json();\r",
+							"\r",
+							"pm.collectionVariables.set(\"baseline_response\", JSON.stringify(baselineResponse));\r",
+							"console.log(\"Baeline response saved\", baselineResponse);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://dummyjson.com/products/1",
+					"protocol": "https",
+					"host": [
+						"dummyjson",
+						"com"
+					],
+					"path": [
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{HUGGINGFACE_API_KEY}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HUGGINGFACE_API_KEY",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "baseline_response",
+			"value": ""
+		}
+	]
+}
