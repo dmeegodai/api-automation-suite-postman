@@ -59,6 +59,84 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get Updated Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let updatedResponse = {\r",
+							"    id: 1,\r",
+							"    title: \"Essence Mascara Lash Princess\",\r",
+							"    description: \"NEW: Updated formula with long-lasting lift and shine!\",\r",
+							"    category: \"beauty\",\r",
+							"    price: 9.991,\r",
+							"    discountPercentage: 10.38,\r",
+							"    rating: 3.5\r",
+							"}\r",
+							"\r",
+							"pm.collectionVariables.set(\"updatedResponse\", JSON.stringify(updatedResponse));\r",
+							"console.log(\"Updated response saved to collection variables.\");"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dummyjson.com/products/1",
+					"protocol": "https",
+					"host": [
+						"dummyjson",
+						"com"
+					],
+					"path": [
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Compare Product Responses",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let baselineRaw =  pm.collectionVariables.get(\"baseline_response\");\r",
+							"let updatedRaw = pm.collectionVariables.get(\"updatedResponse\");\r",
+							"\r",
+							"if(!baselineRaw || !updatedRaw) {\r",
+							"    console.log(\"Both Baseline and Updated responses must be set.\");\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost/diff",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"diff"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
@@ -101,6 +179,10 @@
 		},
 		{
 			"key": "baseline_response",
+			"value": ""
+		},
+		{
+			"key": "updatedResponse",
 			"value": ""
 		}
 	]
