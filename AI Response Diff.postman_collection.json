@@ -115,7 +115,14 @@
 							"\r",
 							"if(!baselineRaw || !updatedRaw) {\r",
 							"    console.log(\"Both Baseline and Updated responses must be set.\");\r",
-							"}"
+							"}\r",
+							"\r",
+							"let baseline = JSON.parse(baselineRaw);\r",
+							"let updated = JSON.parse(updatedRaw);\r",
+							"\r",
+							"let diff = deepDiff(baseline, updated);\r",
+							"pm.collectionVariables.set(\"response_diff\", JSON.stringify(diff, null,2));\r",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
