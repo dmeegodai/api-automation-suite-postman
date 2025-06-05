@@ -116,6 +116,20 @@
 							"if(!baselineRaw || !updatedRaw) {\r",
 							"    console.log(\"Both Baseline and Updated responses must be set.\");\r",
 							"}\r",
+							"function deepDiff(obj1, obj2) {\r",
+							"    const changes = {};\r",
+							"    const keys = new Set([...Object.keys(obj1), ...Object.keys(obj2)]);\r",
+							"\r",
+							"    for (const key of keys) {\r",
+							"        if (JSON.stringify(obj1[key]) !== JSON.stringify(obj2[key])) {\r",
+							"            changes[key] = {\r",
+							"                baseline: obj1[key],\r",
+							"                updated: obj2[key]\r",
+							"            };\r",
+							"        }\r",
+							"    }\r",
+							"    return changes;\r",
+							"}\r",
 							"\r",
 							"let baseline = JSON.parse(baselineRaw);\r",
 							"let updated = JSON.parse(updatedRaw);\r",
@@ -133,14 +147,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost/diff",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"path": [
-						"diff"
-					]
+					"raw": ""
 				}
 			},
 			"response": []
