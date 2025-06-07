@@ -135,7 +135,7 @@
 							"let updated = JSON.parse(updatedRaw);\r",
 							"\r",
 							"let diff = deepDiff(baseline, updated);\r",
-							"pm.collectionVariables.set(\"response_diff\", JSON.stringify(diff, null,2));\r",
+							"pm.collectionVariables.set(\"response_diff\", JSON.stringify(diff));\r",
 							""
 						],
 						"type": "text/javascript",
@@ -147,7 +147,102 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
+					"raw": "https://postman-echo.com/get",
+					"protocol": "https",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Hugging Face Request",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let baselineRaw =  pm.collectionVariables.get(\"baseline_response\");\r",
+							"let updatedRaw = pm.collectionVariables.get(\"updatedResponse\");\r",
+							"\r",
+							"function deepDiff(obj1, obj2) {\r",
+							"    const changes = {};\r",
+							"    const keys = new Set([...Object.keys(obj1), ...Object.keys(obj2)]);\r",
+							"\r",
+							"    for (const key of keys) {\r",
+							"        if (JSON.stringify(obj1[key]) !== JSON.stringify(obj2[key])) {\r",
+							"            changes[key] = {\r",
+							"                baseline: obj1[key],\r",
+							"                updated: obj2[key]\r",
+							"            };\r",
+							"        }\r",
+							"    }\r",
+							"    return changes;\r",
+							"}\r",
+							"if(!baselineRaw || !updatedRaw) {\r",
+							"    console.log(\"Both Baseline and Updated responses must be set.\");\r",
+							"} else {\r",
+							"    let baseline = JSON.parse(baselineRaw);\r",
+							"    let updated = JSON.parse(updatedRaw);\r",
+							"    let diff = deepDiff(baseline, updated);\r",
+							"    pm.collectionVariables.set(\"response_diff\", JSON.stringify(diff. null, 2));\r",
+							"\r",
+							"    let summary = [];\r",
+							"\r",
+							"    Object.entries(diff).forEach(([key, value]) => {\r",
+							"        if (value.baseline !== undefined && value.updated !== undefined) {\r",
+							"            summary.push(`${key} changed from \"${value.baseline}\" to \"${value.updated}\"`);\r",
+							"        } else if (value.baseline && !value.updated) {\r",
+							"            summary.push(`${key} was removed (was \"${value.baseline}\")`);\r",
+							"        } else if (!value.baseline && value.updated) {\r",
+							"            summary.push(`${key} was added with value \"${value.updated}\"`);\r",
+							"        }\r",
+							"    });\r",
+							"\r",
+							"    const readableSummary = summary.join('. ').replace(/\"/g, \"'\") + '.';\r",
+							"    pm.collectionVariables.set(\"response_diff_summary\", readableSummary);\r",
+							"\r",
+							"}\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"inputs\": \"{{response_diff_summary}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
+					"protocol": "https",
+					"host": [
+						"api-inference",
+						"huggingface",
+						"co"
+					],
+					"path": [
+						"models",
+						"facebook",
+						"bart-large-cnn"
+					]
 				}
 			},
 			"response": []
@@ -197,6 +292,15 @@
 		},
 		{
 			"key": "updatedResponse",
+			"value": ""
+		},
+		{
+			"key": "response_diff",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "response_diff_summary",
 			"value": ""
 		}
 	]
